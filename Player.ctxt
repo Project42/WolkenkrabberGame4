@@ -1,0 +1,18 @@
+#BlueJ class context
+comment0.params=speed
+comment0.target=Player(int)
+comment1.params=type
+comment1.target=Player\ createPlayer(Player.PlayerType)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=dx\ dy
+comment3.target=void\ move(int,\ int)
+comment4.params=
+comment4.target=void\ switchImageLeft()
+comment5.params=
+comment5.target=void\ switchImageRight()
+comment6.params=
+comment6.target=void\ switchImageStraight()
+comment7.params=
+comment7.target=void\ switchImageBack()
+numComments=8

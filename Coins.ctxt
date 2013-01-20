@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=Coins()
+comment1.params=prefix
+comment1.target=Coins(java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=coinz
+comment3.target=void\ add(int)
+comment4.params=coinz
+comment4.target=void\ remove(int)
+comment5.params=
+comment5.target=int\ getCoinValue()
+comment6.params=
+comment6.target=void\ updateCoinsImage()
+numComments=7
