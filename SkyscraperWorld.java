@@ -32,10 +32,11 @@ public class SkyscraperWorld extends World {
               int randomY = 50 + Greenfoot.getRandomNumber(70 - 50);
               addObject(new Coin(), randomX, randomY);
         }
-        scoreCounter.add(2);
 
     }
-
+    
+    
+    
     public Coins getCoinCounter() {
         return coinCounter;
     }

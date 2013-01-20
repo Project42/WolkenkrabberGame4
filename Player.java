@@ -4,6 +4,18 @@ import java.lang.Object;
 public abstract class Player extends Actor {
     private int speed;
     private int initialSpeed;
+    // "physics" variables
+    private int vSpeed = 0;
+    private int acceleration = 1;
+    private int jumpStrength = 4;
+    // Important game state info
+    private boolean jumping = false;
+    private boolean dead = false;
+    // Bottom of screen, used for death
+    private int floor;
+    // Variables for reducing CPU load on enemy collision detection
+    private int reduceCollisionDetection = 3;
+    private int currCollDetection = 0;
 
     protected GreenfootImage image1;
     protected GreenfootImage image2;
@@ -37,17 +49,9 @@ public abstract class Player extends Actor {
 
     @Override
     public void act() {
+        fall();
+        
         if (speed / 4 <= 0) speed = 4;
-
-        if (Greenfoot.isKeyDown("w")) {
-            move(0, -speed / 4);
-            switchImageStraight();
-        }
-
-        if (Greenfoot.isKeyDown("s")) {
-            move(0, +speed / 4);
-            switchImageStraight();
-        }
 
         if (Greenfoot.isKeyDown("a")) {
             move(-speed / 4, 0);
@@ -57,6 +61,16 @@ public abstract class Player extends Actor {
         if (Greenfoot.isKeyDown("d")) {
             move(+speed / 4, 0);
             switchImageRight();
+        }
+        
+        if (Greenfoot.isKeyDown("space")&& jumping==false )
+        {
+            jump();
+        }
+        
+        if (getY() == floor)
+        {
+            death();
         }
        /* if(Greenfoot.mouseClicked(null)) {
             getX();
@@ -94,7 +108,7 @@ public abstract class Player extends Actor {
         }
             
         }*/
-        Actor coin = getOneObjectAtOffset(0, 0, Coin.class);
+        Actor coin = getOneIntersectingObject(Coin.class);
         if (coin != null) {
             Greenfoot.playSound("Coin.wav");
             getWorld().removeObject(coin);
@@ -110,7 +124,128 @@ public abstract class Player extends Actor {
 
         setLocation(getX() + dx, getY() + dy);
     }
+    
+    public void jump()
+    {
+        jumping = true;
+        vSpeed = -jumpStrength;
+        fall();
+    }
+    
+    public void fall(){
+                move(0, +vSpeed); 
+                vSpeed = vSpeed + acceleration;
+    }
 
+    public void checkFall()
+    {
+        if(onGround()) {
+            vSpeed = 0;
+            jumping = false;
+        }
+        else {
+            fall();
+        }
+    }
+    
+    public boolean onGround()
+    {
+        Surface under = null;
+        int counter = 1;
+        int max = vSpeed;
+        //int variance;
+        while (counter <= max && under == null)
+        {
+            under = (Surface)getOneObjectAtOffset ( 0, getImage().getHeight() / 2 + counter, Surface.class);
+            counter++;
+        }
+        // If there is a platform, correct Pengu's height so that he always lands right on the platform
+        // This avoids a wierd floating effect that was present otherwise
+        return under != null;
+    }
+    
+    public Actor getSurface()
+    {
+        Actor under = getOneObjectAtOffset ( 0, getImage().getHeight() / 2, Surface.class);
+        int counter = -1;
+        int max = vSpeed + 2;
+        while (counter <= max && under == null)
+        {
+            under = getOneObjectAtOffset ( 0, getImage().getHeight() / 2 + counter, Surface.class);
+            counter++;
+        }
+        return under;
+    }
+    
+    
+    public Enemy getEnemy()
+    {
+        // This loop avoids checking for close enemies on every act() to avoid performance issues
+        // Instead, it does it once every reduceCollisionDetection times (3 at time of writing)
+        if (currCollDetection == reduceCollisionDetection)
+        {
+            Actor temp = getOneIntersectingObject(Enemy.class);
+            Enemy enemy = (Enemy)temp;
+            currCollDetection = 0;
+            return enemy;
+        }
+        else
+        {
+            currCollDetection++;
+        }
+        return null;
+    }
+    
+    
+    public void setFloor(int inFloor)
+    {
+        this.floor = inFloor;
+    }
+
+    // Method for dying
+    public void death()
+    {
+        setRotation(90);
+        dead = true;
+        Greenfoot.stop();
+    }
+
+    /**
+     * Left and then Right facing collision detection.
+     * Uses a loop to check for an offset object to either side up to
+     * 1/2 the height of the penguin
+     */
+    public boolean checkLeft()
+    {
+        Actor bumper = null;
+        int counter = 0;
+        int max = (int)(getImage().getHeight() / 2);
+        while (counter < max && bumper == null)
+        {
+            bumper = getOneObjectAtOffset (-1*( getImage().getWidth() / 2), max - counter, Surface.class);
+            counter++;
+        }
+        return bumper != null;
+    }
+
+    public boolean checkRight()
+    {
+        Actor bumper = null;
+        int counter = 0;
+        int max = (int)(getImage().getHeight() / 2);
+        while (counter < max && bumper == null)
+        {
+            bumper = getOneObjectAtOffset ( getImage().getWidth() / 2, max - counter , Surface.class);
+            counter++;
+        }
+        return bumper != null;
+    }
+
+    public boolean checkDeath()
+    {
+        return dead;
+    }
+    
     protected void switchImageLeft()
     {
         if (getImage() == image1)
