@@ -3,7 +3,7 @@ import greenfoot.*;
 public class Genius extends Player {
     public Genius() {
         super(8);
-
+        getImage().scale(40, 40);
         image1 = new GreenfootImage("GENIElinks2.png");
         image2 = new GreenfootImage("GENIElinks1.png");
         image3 = new GreenfootImage("GENIErechts2.png");

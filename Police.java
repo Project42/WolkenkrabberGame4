@@ -3,7 +3,7 @@ import greenfoot.*;
 public class Police extends Player {
     public Police() {
         super(6);
-
+        getImage().scale(40, 40);
         image1 = new GreenfootImage("POLITIElinks2.png");
         image2 = new GreenfootImage("POLITIElinks1.png");
         image3 = new GreenfootImage("POLITIErechts2.png");

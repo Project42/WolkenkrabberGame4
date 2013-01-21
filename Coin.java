@@ -15,7 +15,7 @@ public class Coin extends Actor
     private int randomNumber;
     
     public Coin(){
-        getImage().scale(20, 20);
+        getImage().scale(30, 30);
     }
     
     public void act() {

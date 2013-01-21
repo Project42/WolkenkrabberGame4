@@ -3,7 +3,7 @@ import greenfoot.*;
 public class Citizen extends Player {
     public Citizen() {
         super(4);
-
+        getImage().scale(40, 40);
         image1 = new GreenfootImage("BURGERlinks2.png");
         image2 = new GreenfootImage("BURGERlinks1.png");
         image3 = new GreenfootImage("BURGERrechts2.png");

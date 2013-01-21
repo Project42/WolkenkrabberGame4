@@ -42,13 +42,13 @@ public abstract class Player extends Actor {
             case POLICE: return new Police();
             case GENIUS: return new Genius();
         }
-
         assert false;
         return null;
     }
 
     @Override
     public void act() {
+        getImage().scale(40, 40);
         checkFall();
         if (speed / 4 <= 0) speed = 4;
 
@@ -106,7 +106,7 @@ public abstract class Player extends Actor {
         }*/
         Actor coin = getOneIntersectingObject(Coin.class);
         if (coin != null) {
-            Greenfoot.playSound("Coin.wav");
+            //Greenfoot.playSound("Coin.wav");
             getWorld().removeObject(coin);
             ((SkyscraperWorld)getWorld()).getCoinCounter().add(10);
         }
@@ -149,7 +149,7 @@ public abstract class Player extends Actor {
     
      public boolean onGround()
     {
-        Object under = getOneObjectAtOffset(0, 0, null);
+        Object under = getOneObjectAtOffset(0, 2, Surface.class);
         return under != null;
     }
    
