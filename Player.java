@@ -4,16 +4,10 @@ import java.lang.Object;
 public abstract class Player extends Actor {
     private int speed;
     private int initialSpeed;
-    // "physics" variables
     private int vSpeed = 0;
     private int acceleration = 1;
     private int jumpStrength = 4;
-    // Important game state info
     private boolean jumping = false;
-    private boolean dead = false;
-    // Bottom of screen, used for death
-    private int floor;
-    // Variables for reducing CPU load on enemy collision detection
     private int reduceCollisionDetection = 3;
     private int currCollDetection = 0;
 
@@ -106,10 +100,10 @@ public abstract class Player extends Actor {
         }*/
         Actor coin = getOneIntersectingObject(Coin.class);
         if (coin != null) {
-            //Greenfoot.playSound("Coin.wav");
+            Greenfoot.playSound("Coin.wav");
             getWorld().removeObject(coin);
-            ((SkyscraperWorld)getWorld()).getCoinCounter().add(10);
-        }
+            ((SkyscraperWorld)getWorld()).getScoreCounter().add(10);
+        } 
     }
 
     private void move(int dx, int dy) {
@@ -132,7 +126,7 @@ public abstract class Player extends Actor {
     {
         setLocation ( getX(), getY() + vSpeed);
         vSpeed = vSpeed + acceleration;
-        if ( atBottom() )
+        if ( inLava() )
             gameEnd();
     }
 
@@ -171,9 +165,10 @@ public abstract class Player extends Actor {
         return null;
     }
     
-   private boolean atBottom()
+   private boolean inLava()
     {
-        return getY() >= getWorld().getHeight() - 2;
+        Actor lava = getOneIntersectingObject(Lava.class);
+        return lava != null;
     }
     
     private void gameEnd()

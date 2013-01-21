@@ -28,5 +28,5 @@ comment7.target=boolean\ onGround()
 comment8.params=
 comment8.target=Enemy\ getEnemy()
 comment9.params=
-comment9.target=boolean\ atBottom()
+comment9.target=boolean\ inLava()
 numComments=15
