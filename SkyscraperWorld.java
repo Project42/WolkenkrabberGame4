@@ -14,8 +14,10 @@ public class SkyscraperWorld extends World {
         
                 setPaintOrder(GameOverScreen.class, /*Overlay.class,*/ Counter.class, Coins.class, MenuBar.class, Player.class, Coin.class);
         
-        addObject(player = Player.createPlayer(playerType), 40, 67);
-        
+        //addObject(player = Player.createPlayer(playerType), 40, 40);
+        addObject(new Ground(), 29, 50);
+        addObject(new Ground(), 19, 60);
+        addObject(new Ground(), 39, 40);
         addObject(new MenuBar(), 39, 75);
 
         scoreCounter = new Counter("Score: ");
