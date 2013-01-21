@@ -5,6 +5,7 @@ public class SkyscraperWorld extends World {
     public boolean stopped;
     public Counter scoreCounter;
     private Player player;
+    private Player.PlayerType playerType;
     private int levelCompletePoints;
     private int timeCount = 0;
     private int currentLevel;
@@ -12,12 +13,13 @@ public class SkyscraperWorld extends World {
     private MovingBrick[] MovingBricks;
     private Brick[] Bricks;
     private Coin[] Coins;
-    private Lava[] Lava;
+    private Water[] Water;
 
     //GreenfootSound backgroundMusic = new GreenfootSound("zeerstoer.mp3");
 
-    public SkyscraperWorld(Player.PlayerType playerType)  {
+    public SkyscraperWorld(Player.PlayerType type)  {
         super(80, 80, 10);
+        playerType = type;
         currentLevel = 1;
         levelCompletePoints = loadLevel(currentLevel);
         //backgroundMusic.playLoop();
@@ -131,11 +133,11 @@ public class SkyscraperWorld extends World {
                 removeObject(Coins[i]);
             }
         }
-        if (Lava != null)
+        if (Water != null)
         {
-            for (int i = 0; i < Lava.length; i++)
+            for (int i = 0; i < Water.length; i++)
             {
-                removeObject(Lava[i]);
+                removeObject(Water[i]);
             }
         }
         removeObject(player);
@@ -150,7 +152,7 @@ public class SkyscraperWorld extends World {
             MovingBricks = new MovingBrick[2];
             Bricks = new Brick[30];
             Coins = new Coin[3];
-            Lava = new Lava[5];
+            Water = new Water[5];
             
             //MovingBricks distance's
             MovingBricks[0] = new MovingBrick(5, 36);
@@ -177,11 +179,11 @@ public class SkyscraperWorld extends World {
         addObject(Ground[0], 8, 68);
         addObject(Ground[1], 19, 68);
         addObject(Ground[2], 27, 68);
-        addObject(Lava[0], 42, 68);
-        addObject(Lava[1], 52, 68);
-        addObject(Lava[2], 62, 68);
-        addObject(Lava[3], 72, 68);
-        addObject(Lava[4], 76, 68);
+        addObject(Water[0], 42, 68);
+        addObject(Water[1], 52, 68);
+        addObject(Water[2], 62, 68);
+        addObject(Water[3], 72, 68);
+        addObject(Water[4], 76, 68);
         
         //stairs
         addObject(Bricks[0], 35, 48);
@@ -236,7 +238,7 @@ public class SkyscraperWorld extends World {
         
         addObject(player = Player.createPlayer(playerType), 4, 64);
         
-        if((getY() <= 10)&&(getX() >=70)) {
+        if((player.getY() <= 10)&&(player.getX() >=70)) {
             scoreCounter.add(10);
         }  
         return 40;
@@ -245,7 +247,7 @@ public class SkyscraperWorld extends World {
        {
             addObject(player = Player.createPlayer(playerType), 40, 40);
        }
-    
+    return 40;
 }
     
     
