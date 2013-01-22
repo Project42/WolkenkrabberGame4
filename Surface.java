@@ -15,10 +15,5 @@ public abstract class Surface  extends Actor
     public void act() 
     {
         // Add your action code here.
-    }    
-    public int getMove()
-    {
-        return 0;
     }
-    public int getNewHeight() {return 0;}
 }

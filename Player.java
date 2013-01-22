@@ -1,5 +1,6 @@
 import greenfoot.*;
 import java.lang.Object;
+import java.util.List;
 
 public abstract class Player extends Actor {
     private int speed;
@@ -8,6 +9,7 @@ public abstract class Player extends Actor {
     private int acceleration = 1;
     private int jumpStrength = 4;
     private boolean jumping = false;
+    private boolean falling = false;
     private int reduceCollisionDetection = 3;
     private int currCollDetection = 0;
 
@@ -56,13 +58,12 @@ public abstract class Player extends Actor {
             switchImageRight();
         }
         
-        if (Greenfoot.isKeyDown("space")&& jumping==false )
-        {
+        if (Greenfoot.isKeyDown("space") && jumping == false) {
             jump();
         }
         
  
-       /* if(Greenfoot.mouseClicked(null)) {
+        /* if(Greenfoot.mouseClicked(null)) {
             getX();
             getY();
             //die shit hieronder faalt en moet op een andere manier gemaakt worden -> niet in act!
@@ -115,36 +116,55 @@ public abstract class Player extends Actor {
         setLocation(getX() + dx, getY() + dy);
     }
     
-    public void jump()
-    {
-        jumping = true;
-        vSpeed = -jumpStrength;
-        fall();
+    public void jump() {
+        if (vSpeed <= 0 && !jumping) {
+            jumping = true;
+            vSpeed = -jumpStrength;
+        }
     }
     
-    public void fall()
-    {
-        setLocation ( getX(), getY() + vSpeed);
-        vSpeed = vSpeed + acceleration;
-        if ( inWater() )
-            gameEnd();
+    public void fall() {
+        setLocation(getX(), getY() + vSpeed);
+        if (vSpeed > 4) {
+            vSpeed = 4;
+        } else {
+            vSpeed = vSpeed + acceleration;
+        }
+        
+        boolean moveUp = false;
+        Actor obj = null;
+        for (int i = 1; i <= 4; ++i) {
+            obj = getOneObjectAtOffset(0, i, Surface.class);
+            if (obj != null) {
+                moveUp = true;
+                break;
+            }
+        }
+        if (moveUp) {
+            setLocation(getX(), obj.getY() - 4);
+        }
+        
+        if (inWater()) {
+            ((SkyscraperWorld)getWorld()).endGame();
+        }
     }
 
-    private void checkFall()
-    {
+    private void checkFall() {
+        if (jumping || !onGround()) {
+            fall();
+        }
+        
         if (onGround()) {
             vSpeed = 0;
             jumping = false;
         }
-        else {
-            fall();
-        }
     }
     
-     public boolean onGround()
+    public boolean onGround()
     {
-        Object under = getOneObjectAtOffset(0, 2, Surface.class);
-        return under != null;
+         return getOneObjectAtOffset(-1, 4, Surface.class) != null
+             || getOneObjectAtOffset(0, 4, Surface.class) != null
+             || getOneObjectAtOffset(1, 4, Surface.class) != null;
     }
    
     public Enemy getEnemy()
@@ -165,15 +185,10 @@ public abstract class Player extends Actor {
         return null;
     }
     
-   private boolean inWater()
+    private boolean inWater()
     {
         Actor Water = getOneIntersectingObject(Water.class);
         return Water != null;
-    }
-    
-    private void gameEnd()
-    {
-        Greenfoot.stop();
     }
     
     protected void switchImageLeft()

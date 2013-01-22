@@ -41,11 +41,8 @@ public class SkyscraperWorld extends World {
 
         
         // Check for death, level completion and game completion:
-        if (checkDeath())
-        {
-            endGame();
-        }
-        else if (checkLevelComplete())
+        
+        if (checkLevelComplete())
         {
             // If level is complete, call purge() to remove all objects
             purge();
@@ -61,11 +58,6 @@ public class SkyscraperWorld extends World {
         }
         // Increment counter
         timeCount++;
-    }
-    
-    public boolean checkDeath()
-    {
-        return checkDeath();
     }
 
     public boolean checkLevelComplete()
@@ -83,7 +75,7 @@ public class SkyscraperWorld extends World {
     public void endGame()
     {
         ScoreBoard scoreBoard = new ScoreBoard(scoreCounter.getValue());
-        addObject(scoreBoard,320,200);
+        addObject(scoreBoard,40,40);
         Greenfoot.stop();
     }
 
@@ -175,80 +167,84 @@ public class SkyscraperWorld extends World {
                 Coins[i] = new Coin();
             }
             
-        //first floor
-        addObject(Ground[0], 8, 68);
-        addObject(Ground[1], 19, 68);
-        addObject(Ground[2], 27, 68);
-        addObject(Water[0], 42, 68);
-        addObject(Water[1], 52, 68);
-        addObject(Water[2], 62, 68);
-        addObject(Water[3], 72, 68);
-        addObject(Water[4], 76, 68);
+            for (int i = 0; i < Water.length; i++) {
+                Water[i] = new Water();
+            }
+            
+            //first floor
+            addObject(Ground[0], 8, 68);
+            addObject(Ground[1], 19, 68);
+            addObject(Ground[2], 27, 68);
+            addObject(Water[0], 42, 68);
+            addObject(Water[1], 52, 68);
+            addObject(Water[2], 62, 68);
+            addObject(Water[3], 72, 68);
+            addObject(Water[4], 76, 68);
+            
+            //stairs
+            addObject(Bricks[0], 35, 48);
+            addObject(Bricks[1], 35, 52);
+            addObject(Bricks[2], 35, 56);
+            addObject(Bricks[3], 35, 60);
+            addObject(Bricks[4], 35, 64);
+            
+            addObject(Bricks[5], 31, 64);
+            addObject(Bricks[6], 31, 60);
+            addObject(Bricks[7], 31, 56);
+            addObject(Bricks[8], 31, 52);
+            
+            addObject(Bricks[9], 27, 64);
+            addObject(Bricks[10], 27, 60);
+            addObject(Bricks[11], 27, 56);
+            
+            addObject(Bricks[12], 23, 64);
+            addObject(Bricks[13], 23, 60);
+            
+            addObject(Bricks[14], 19, 64);
+            
+            //jump parts
+            addObject(Bricks[15], 45, 48);
+            addObject(Bricks[16], 56, 48);
+            addObject(Bricks[17], 67, 48);
+            addObject(Bricks[18], 78, 48);
+            addObject(Bricks[19], 78, 44);
+            addObject(Bricks[20], 72, 34);
+            addObject(Bricks[21], 62, 34);
+            addObject(Bricks[22], 51, 32);
+            addObject(Bricks[23], 40, 30);
+            addObject(Bricks[24], 1, 26);
+            addObject(Bricks[25], 25, 22);
+            addObject(Bricks[26], 5, 22);
+            addObject(Bricks[27], 1, 22);
+            addObject(Bricks[28], 1, 13);
+            addObject(Bricks[29], 13, 10);
+            
+            //Moving Bricks
+            addObject(MovingBricks[0], 25, 26);
+            addObject(MovingBricks[1], 50, 10);
+            
+            //Coins
+            addObject(Coins[0], 45, 43);
+            addObject(Coins[1], 62, 39);
+            addObject(Coins[2], 57, 26);
+            
+            //Finish
+            addObject(Ground[3], 70, 10);
+            
+            
+            addObject(player = Player.createPlayer(playerType), 4, 64);
+            
+            if((player.getY() <= 10)&&(player.getX() >=70)) {
+                scoreCounter.add(10);
+            }  
+            return 40;
+        }
         
-        //stairs
-        addObject(Bricks[0], 35, 48);
-        addObject(Bricks[1], 35, 52);
-        addObject(Bricks[2], 35, 56);
-        addObject(Bricks[3], 35, 60);
-        addObject(Bricks[4], 35, 64);
-        
-        addObject(Bricks[5], 31, 64);
-        addObject(Bricks[6], 31, 60);
-        addObject(Bricks[7], 31, 56);
-        addObject(Bricks[8], 31, 52);
-        
-        addObject(Bricks[9], 27, 64);
-        addObject(Bricks[10], 27, 60);
-        addObject(Bricks[11], 27, 56);
-        
-        addObject(Bricks[12], 23, 64);
-        addObject(Bricks[13], 23, 60);
-        
-        addObject(Bricks[14], 19, 64);
-        
-        //jump parts
-        addObject(Bricks[15], 45, 48);
-        addObject(Bricks[16], 56, 48);
-        addObject(Bricks[17], 67, 48);
-        addObject(Bricks[18], 78, 48);
-        addObject(Bricks[19], 78, 44);
-        addObject(Bricks[20], 72, 34);
-        addObject(Bricks[21], 62, 34);
-        addObject(Bricks[22], 51, 32);
-        addObject(Bricks[23], 40, 30);
-        addObject(Bricks[24], 1, 26);
-        addObject(Bricks[25], 25, 22);
-        addObject(Bricks[26], 5, 22);
-        addObject(Bricks[27], 1, 22);
-        addObject(Bricks[28], 1, 13);
-        addObject(Bricks[29], 13, 10);
-        
-        //Moving Bricks
-        addObject(MovingBricks[0], 25, 26);
-        addObject(MovingBricks[1], 50, 10);
-        
-        //Coins
-        addObject(Coins[0], 45, 43);
-        addObject(Coins[1], 62, 39);
-        addObject(Coins[2], 57, 26);
-        
-        //Finish
-        addObject(Ground[3], 70, 10);
-        
-        
-        addObject(player = Player.createPlayer(playerType), 4, 64);
-        
-        if((player.getY() <= 10)&&(player.getX() >=70)) {
-            scoreCounter.add(10);
-        }  
+        if (lvl == 2) {
+            addObject(player = Player.createPlayer(playerType), 40, 40);
+        }
         return 40;
     }
-    if (lvl == 2)
-       {
-            addObject(player = Player.createPlayer(playerType), 40, 40);
-       }
-    return 40;
-}
     
     
     public Counter getScoreCounter() {
