@@ -14,6 +14,7 @@ public class SkyscraperWorld extends World {
     private Brick[] Bricks;
     private Coin[] Coins;
     private Water[] Water;
+    private MovingWater movingWater;
 
     //GreenfootSound backgroundMusic = new GreenfootSound("zeerstoer.mp3");
 
@@ -29,6 +30,8 @@ public class SkyscraperWorld extends World {
         
         
         /**General stuff**/
+        
+        addObject(movingWater = new MovingWater(), 40, 70);
         
         
         addObject(new MenuBar(), 39, 75);
@@ -246,6 +249,9 @@ public class SkyscraperWorld extends World {
         return 40;
     }
     
+    public int getWaterLevel() {
+        return movingWater.getLevel();
+    }
     
     public Counter getScoreCounter() {
         return scoreCounter;

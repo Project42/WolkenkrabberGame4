@@ -99,6 +99,13 @@ public abstract class Player extends Actor {
         }
             
         }*/
+        
+        int waterOffset = 70 - ((SkyscraperWorld)getWorld()).getWaterLevel() / 2 / 10;
+        if (waterOffset <= getY()) {
+            getWorld().removeObject(this);
+            return;
+        }
+        
         Actor coin = getOneIntersectingObject(Coin.class);
         if (coin != null) {
             Greenfoot.playSound("Coin.wav");

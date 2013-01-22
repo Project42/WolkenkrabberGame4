@@ -6,13 +6,13 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class MovingWater extends Obstacles
+public class MovingWater extends Actor
 {
     private int acts;
     private int level;
 
     public MovingWater() {
-        getImage().scale(820, 20);
+        getImage().scale(1, 20);
         getImage().setTransparency(100);
         level = 10;
     }
@@ -22,10 +22,10 @@ public class MovingWater extends Obstacles
         setLocation(40, 70);
         
         ++acts;
-        if (acts == 4) {
-            getImage().scale(820, getImage().getHeight() + 1);
+        if (acts == 1) {
+            getImage().scale(820, getImage().getHeight() + 2);
             acts = 0;
-            ++level;
+            level += 2;
         }
     }
     
