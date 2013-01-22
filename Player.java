@@ -126,7 +126,7 @@ public abstract class Player extends Actor {
     {
         setLocation ( getX(), getY() + vSpeed);
         vSpeed = vSpeed + acceleration;
-        if ( inLava() )
+        if ( inWater() )
             gameEnd();
     }
 
@@ -165,10 +165,10 @@ public abstract class Player extends Actor {
         return null;
     }
     
-   private boolean inLava()
+   private boolean inWater()
     {
-        Actor lava = getOneIntersectingObject(Lava.class);
-        return lava != null;
+        Actor Water = getOneIntersectingObject(Water.class);
+        return Water != null;
     }
     
     private void gameEnd()
