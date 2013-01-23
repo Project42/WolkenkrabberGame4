@@ -1,0 +1,6 @@
+public enum Game {
+    SANDBAG_GAME,
+    CONTROL_ROOM_GAME,
+    HELICOPTER_GAME,
+    SKYSCRAPER_GAME
+}

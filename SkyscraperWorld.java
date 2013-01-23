@@ -1,4 +1,5 @@
 import greenfoot.*;
+import java.io.IOException;
 
 public class SkyscraperWorld extends World {
     private final int WINNING_LEVEL = 5;
@@ -26,7 +27,7 @@ public class SkyscraperWorld extends World {
         levelCompletePoints = loadLevel(currentLevel);
         //backgroundMusic.playLoop();
         
-                setPaintOrder(GameOverScreen.class, /*Overlay.class,*/ Counter.class, MenuBar.class, MovingWater.class, Player.class, ScoreBoard.class, Coin.class, Surface.class);
+                setPaintOrder(GameOverScreen.class, /*Overlay.class,*/ Counter.class, MenuBar.class, MovingWater.class, Player.class, Coin.class, Surface.class);
         
         
         
@@ -79,33 +80,24 @@ public class SkyscraperWorld extends World {
             return false;
     }
 
-    /**
-     * Triggers the losing screen - tell player how many bees they were successful
-     * in eating.
-     */
-    public void endGame()
-    {
-        ScoreBoard scoreBoard = new ScoreBoard(scoreCounter.getValue());
-        addObject(scoreBoard,40,40);
-        Greenfoot.stop();
+    public void gameOver() {
+        saveHighScore();
+        Greenfoot.setWorld(new GameOverWorld(Game.SKYSCRAPER_GAME));
     }
-
-    /**
-     * Triggers the Winning screen - gives time. Time only given
-     * when game is beaten! (mostly because scoreboard can't show both
-     * without more significant modification).
-     */
-    public void winGame()
-    {
-        ScoreBoard winGame = new ScoreBoard(scoreCounter.getValue(), "You Win!", "Score:");
-        addObject(winGame,320,200);
-        Greenfoot.stop();
+    
+    public void winGame() {
+        Greenfoot.setWorld(new HighScoreWorld(Game.SKYSCRAPER_GAME));
     }
-
-    /**
-     * Purges all of the arrays which hold the objects, thus "erasing"
-     * the level.
-     */
+    
+    private void saveHighScore() {
+        HighScore highScore = HighScore.askName(scoreCounter.getValue());
+        try {
+            highScore.save(HighScore.defaultFilenameForGame(Game.SKYSCRAPER_GAME));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }        
+    }
+    
     public void purge()
     {
         if (Ground != null)
