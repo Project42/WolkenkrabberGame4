@@ -22,7 +22,7 @@ public class MovingBrickUp extends Surface
     
     public void act() 
     {
-        setLocation ( getX() + speed, getY() );
+        setLocation ( getX(), getY()+ speed );
         
         if (atTurningPoint()) {
             speed = -speed;
@@ -37,7 +37,7 @@ public class MovingBrickUp extends Surface
        return (getY() <= topTurn || getY() >= bottomTurn);
     }
     
-    public int getMovingBrickSpeed(){
+    public int getMovingBrickUpSpeed(){
         return speed;
     }
 }

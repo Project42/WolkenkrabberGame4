@@ -2,17 +2,16 @@ import greenfoot.*;
 import java.io.IOException;
 
 public class SkyscraperWorld extends World {
-    private final int WINNING_LEVEL = 5;
+    private final int WINNING_LEVEL = 7;
     private boolean addScore;
     public Counter scoreCounter;
     private Player player;
-    private Player.PlayerType playerType;
     private int levelCompletePoints;
     private int timeCount = 0;
     private int currentLevel;
     private Ground[] Ground;
-    private MovingBrick[] MovingBricks;
-    private MovingBrick2[] MovingBricks2;
+    private MovingBrickRight[] MovingBricksRight;
+    private MovingBrickLeft[] MovingBricksLeft;
     private MovingBrickUp[] MovingBricksUp;
     private Brick[] Bricks;
     private Coin[] Coins;
@@ -20,9 +19,8 @@ public class SkyscraperWorld extends World {
 
     //GreenfootSound backgroundMusic = new GreenfootSound("zeerstoer.mp3");
 
-    public SkyscraperWorld(Player.PlayerType type)  {
+    public SkyscraperWorld()  {
         super(80, 80, 10);
-        playerType = type;
         currentLevel = 1;
         levelCompletePoints = loadLevel(currentLevel);
         //backgroundMusic.playLoop();
@@ -32,9 +30,12 @@ public class SkyscraperWorld extends World {
         
         
         /**General stuff**/
+        addObject(movingWater = new MovingWater(), 40, 71);
         
         addObject(new MenuBar(), 39, 75);
 
+        player = new Player();
+        
         scoreCounter = new Counter("Score: ");
         addObject(scoreCounter, 6, 74);
     }
@@ -47,12 +48,27 @@ public class SkyscraperWorld extends World {
         if((currentLevel == 1)&&(addScore == false)&&((player.getY() <= 11)&&(player.getX() >=62))){
                 scoreCounter.add(10);
                 addScore = true;
-            } 
+        } 
             
-        if((currentLevel == 2)&&(addScore == false)&&((player.getY() <= 10)&&(player.getX() >=63))){
+        if((currentLevel == 2)&&(addScore == false)&&((player.getY() <= 6)&&(player.getX() <=15))){
                 scoreCounter.add(10);
                 addScore = true;
-            } 
+        } 
+        
+        if((currentLevel == 3)&&(addScore == false)&&((player.getY() <= 6)&&(player.getX() <=15))){
+                scoreCounter.add(10);
+                addScore = true;
+        } 
+        
+        if((currentLevel == 4)&&(addScore == false)&&((player.getY() == 28)&&(player.getX() >=62))){
+                scoreCounter.add(10);
+                addScore = true;
+        } 
+        
+        if((currentLevel == 6)&&(addScore == false)&&((player.getY() <= 9)&&(player.getX() <=15))){
+                scoreCounter.add(10);
+                addScore = true;
+        } 
         
         if (checkLevelComplete())
         {
@@ -114,18 +130,18 @@ public class SkyscraperWorld extends World {
                 removeObject(Bricks[i]);
             }
         }
-        if (MovingBricks != null)
+        if (MovingBricksRight != null)
         {
-            for (int i = 0; i < MovingBricks.length; i++)
+            for (int i = 0; i < MovingBricksRight.length; i++)
             {
-                removeObject(MovingBricks[i]);
+                removeObject(MovingBricksRight[i]);
             }
         }
-        if (MovingBricks2 != null)
+        if (MovingBricksLeft != null)
         {
-            for (int i = 0; i < MovingBricks2.length; i++)
+            for (int i = 0; i < MovingBricksLeft.length; i++)
             {
-                removeObject(MovingBricks2[i]);
+                removeObject(MovingBricksLeft[i]);
             }
         }
         if (MovingBricksUp != null)
@@ -151,15 +167,15 @@ public class SkyscraperWorld extends World {
     {
         if (lvl == 1)
         {
-            
+            addScore = false;
             Ground = new Ground[15];
-            MovingBricks = new MovingBrick[2];
+            MovingBricksRight = new MovingBrickRight[2];
             Bricks = new Brick[30];
             Coins = new Coin[4];
             
             //MovingBricks distance's
-            MovingBricks[0] = new MovingBrick(5, 36);
-            MovingBricks[1] = new MovingBrick(17, 58);
+            MovingBricksRight[0] = new MovingBrickRight(5, 36);
+            MovingBricksRight[1] = new MovingBrickRight(17, 58);
             
         
 
@@ -229,8 +245,8 @@ public class SkyscraperWorld extends World {
             addObject(Bricks[29], 13, 11);
             
             //MovingBricks locations
-            addObject(MovingBricks[0], 25, 27);
-            addObject(MovingBricks[1], 50, 11);
+            addObject(MovingBricksRight[0], 25, 27);
+            addObject(MovingBricksRight[1], 50, 11);
             
             //Coins
             addObject(Coins[0], 45, 44);
@@ -245,19 +261,18 @@ public class SkyscraperWorld extends World {
             addObject(Ground[13], 74, 11);
             addObject(Ground[14], 78, 11);
             
-            
-            addObject(player = Player.createPlayer(playerType), 4, 65);
-            
-            addObject(movingWater = new MovingWater(), 40, 71);
-            
+            addObject(player, 4, 65);
+
             return 50;
         }
         
         if(lvl == 2){
-            Ground = new Ground[11];
-            MovingBricks = new MovingBrick[1];
+            addScore = false;
+            Ground = new Ground[12];
+            MovingBricksRight = new MovingBrickRight[1];
+            MovingBricksLeft = new MovingBrickLeft[1];
             MovingBricksUp = new MovingBrickUp[1];
-            Bricks = new Brick[56];
+            Bricks = new Brick[47];
             Coins = new Coin[4];
             
             for (int i = 0; i < Ground.length; i++)
@@ -311,67 +326,68 @@ public class SkyscraperWorld extends World {
             addObject(Bricks[23], 15, 37);
             addObject(Bricks[24], 19, 37);
             addObject(Bricks[25], 23, 37);
-            addObject(Bricks[26], 27, 37);
-            addObject(Bricks[27], 31, 37);
-            addObject(Bricks[28], 31, 33);
-            addObject(Bricks[29], 35, 33);
+            addObject(Bricks[26], 23, 33);
+            addObject(Bricks[27], 27, 33);
+            addObject(Bricks[28], 27, 29);
+            //
+            addObject(Bricks[29], 31, 29);
             addObject(Bricks[30], 35, 29);
-            addObject(Bricks[31], 35, 25);
-            addObject(Bricks[32], 35, 21);
-            addObject(Bricks[33], 35, 17);
-            addObject(Bricks[34], 35, 13);
+            addObject(Bricks[31], 39, 29);
+            addObject(Bricks[32], 43, 29);
+
             
-            addObject(Bricks[35], 39, 29);
-            addObject(Bricks[36], 43, 45);
-            addObject(Bricks[37], 47, 45);
-            addObject(Bricks[38], 51, 45);
-            addObject(Bricks[39], 55, 45);
-            addObject(Bricks[40], 47, 41);
-            addObject(Bricks[41], 51, 41);
-            addObject(Bricks[42], 55, 41);
-            addObject(Bricks[43], 51, 37);
-            addObject(Bricks[44], 55, 37);
-            addObject(Bricks[45], 55, 33);
-            addObject(Bricks[46], 55, 29);
-            addObject(Bricks[47], 55, 25);
-            addObject(Bricks[49], 55, 21);
-            addObject(Bricks[50], 59, 21);
-            addObject(Bricks[51], 63, 21);
-            addObject(Bricks[52], 71, 21);
-            addObject(Bricks[53], 71, 9);
-            addObject(Bricks[54], 63, 9);
-            addObject(Bricks[55], 55, 9);
-            
-            
-            
-            
+            addObject(Bricks[33], 39, 29);
+            addObject(Bricks[34], 43, 45);
+            addObject(Bricks[35], 47, 45);
+            addObject(Bricks[36], 51, 45);
+            addObject(Bricks[37], 55, 45);
+            addObject(Bricks[38], 47, 41);
+            addObject(Bricks[39], 51, 41);
+            addObject(Bricks[40], 55, 41);
+            addObject(Bricks[41], 51, 37);
+            addObject(Bricks[42], 55, 37);
+            addObject(Bricks[43], 55, 33);
+            addObject(Bricks[44], 59, 21);
+            addObject(Bricks[45], 67, 21);
+            addObject(Bricks[46], 75, 21);    
             
             //MovingBricks distance's
-            MovingBricks[0] = new MovingBrick(21, 39);
+            MovingBricksRight[0] = new MovingBrickRight(49, 79);
+            MovingBricksLeft[0] = new MovingBrickLeft(19, 48);
             MovingBricksUp[0] = new MovingBrickUp(9, 21);
             
             //MovingBricks locations
-            addObject(MovingBricks[0], 45, 21);
+            addObject(MovingBricksRight[0], 49, 6);
+            addObject(MovingBricksLeft[0], 48, 6);
             addObject(MovingBricksUp[0], 79, 15);
             
+            //Coins
+            addObject(Coins[0], 3, 27);
+            addObject(Coins[1], 3, 32);
+            addObject(Coins[2], 11, 27);
+            addObject(Coins[3], 11, 32);
+            
             //Finish
-            addObject(Ground[7], 47, 9);
-            addObject(Ground[8], 43, 9);
-            addObject(Ground[9], 39, 9);
-            addObject(Ground[10], 35, 9);
+            addObject(Ground[7], 15, 6);
+            addObject(Ground[8], 11, 6);
+            addObject(Ground[9], 7, 6);
+            addObject(Ground[10], 3, 6);
+            addObject(Ground[11], 0, 6);
             
             
-            addObject(player = Player.createPlayer(playerType), 4, 65);
+            addObject(player, 4, 65);
             
-            return 50;
+            return 100;
         }
             
         
         if (lvl == 3) {
-            Ground = new Ground[2];
-            MovingBricks = new MovingBrick[7];
-            MovingBricks2 = new MovingBrick2[7];
-            Coins = new Coin[3];
+            addScore = false;
+            Ground = new Ground[12];
+            MovingBricksRight = new MovingBrickRight[7];
+            MovingBricksLeft = new MovingBrickLeft[7];
+            Bricks = new Brick[6];
+            Coins = new Coin[4];
 
             for (int i = 0; i < Ground.length; i++)
             {
@@ -383,49 +399,239 @@ public class SkyscraperWorld extends World {
                 Coins[i] = new Coin();
             }
             
+            for (int i = 0; i < Bricks.length; i++)
+            {
+                Bricks[i] = new Brick();
+            }
+            
             
             //first floor
-            addObject(Ground[0], 8, 69);
+            addObject(Ground[0], 0, 69);
+            addObject(Ground[1], 3, 69);
+            addObject(Ground[2], 7, 69);
+            addObject(Ground[3], 11, 69);
+            addObject(Ground[4], 15, 69);
+            addObject(Ground[5], 19, 69);
+            addObject(Ground[6], 23, 69);
+            
+            
+            addObject(Bricks[0], 15, 65);
+            addObject(Bricks[1], 19, 65);
+            addObject(Bricks[2], 23, 65);
+            addObject(Bricks[3], 19, 61);
+            addObject(Bricks[4], 23, 61);
+            addObject(Bricks[5], 23, 57);
             
             //MovingBricks distance's
-            MovingBricks[0] = new MovingBrick(22, 79);
-            MovingBricks[1] = new MovingBrick(22, 79);
-            MovingBricks[2] = new MovingBrick(22, 79);
-            MovingBricks[3] = new MovingBrick(22, 79);
-            MovingBricks[4] = new MovingBrick(22, 79);
-            MovingBricks[5] = new MovingBrick(22, 79);
-            MovingBricks[6] = new MovingBrick(22, 79);
+            MovingBricksRight[0] = new MovingBrickRight(22, 79);
+            MovingBricksRight[1] = new MovingBrickRight(22, 79);
+            MovingBricksRight[2] = new MovingBrickRight(22, 79);
+            MovingBricksRight[3] = new MovingBrickRight(22, 79);
+            MovingBricksRight[4] = new MovingBrickRight(22, 79);
+            MovingBricksRight[5] = new MovingBrickRight(22, 79);
+            MovingBricksRight[6] = new MovingBrickRight(22, 79);
            
-            MovingBricks2[0] = new MovingBrick2(22, 79);
-            MovingBricks2[1] = new MovingBrick2(22, 79);
-            MovingBricks2[2] = new MovingBrick2(22, 79);
-            MovingBricks2[3] = new MovingBrick2(22, 79);
-            MovingBricks2[4] = new MovingBrick2(22, 79);
-            MovingBricks2[5] = new MovingBrick2(22, 79);
-            MovingBricks2[6] = new MovingBrick2(22, 79);
+            MovingBricksLeft[0] = new MovingBrickLeft(22, 79);
+            MovingBricksLeft[1] = new MovingBrickLeft(22, 79);
+            MovingBricksLeft[2] = new MovingBrickLeft(22, 79);
+            MovingBricksLeft[3] = new MovingBrickLeft(22, 79);
+            MovingBricksLeft[4] = new MovingBrickLeft(22, 79);
+            MovingBricksLeft[5] = new MovingBrickLeft(22, 79);
+            MovingBricksLeft[6] = new MovingBrickLeft(22, 79);
             
             //MovingBricks locations
-            addObject(MovingBricks[0], 50, 61);
-            addObject(MovingBricks[1], 50, 53);
-            addObject(MovingBricks[2], 50, 45);
-            addObject(MovingBricks[3], 50, 37);
-            addObject(MovingBricks[4], 50, 29);
-            addObject(MovingBricks[5], 50, 21);
-            addObject(MovingBricks[6], 50, 13);
+            addObject(MovingBricksRight[0], 50, 61);
+            addObject(MovingBricksRight[1], 50, 53);
+            addObject(MovingBricksRight[2], 50, 45);
+            addObject(MovingBricksRight[3], 50, 37);
+            addObject(MovingBricksRight[4], 50, 29);
+            addObject(MovingBricksRight[5], 50, 21);
+            addObject(MovingBricksRight[6], 50, 13);
             
-            addObject(MovingBricks2[0], 50, 57);
-            addObject(MovingBricks2[1], 50, 49); 
-            addObject(MovingBricks2[2], 50, 41);
-            addObject(MovingBricks2[3], 50, 33);
-            addObject(MovingBricks2[4], 50, 33);
-            addObject(MovingBricks2[5], 50, 25);
-            addObject(MovingBricks2[6], 50, 17);
+            addObject(MovingBricksLeft[0], 50, 57);
+            addObject(MovingBricksLeft[1], 50, 49); 
+            addObject(MovingBricksLeft[2], 50, 41);
+            addObject(MovingBricksLeft[3], 50, 33);
+            addObject(MovingBricksLeft[4], 50, 33);
+            addObject(MovingBricksLeft[5], 50, 25);
+            addObject(MovingBricksLeft[6], 50, 17);
+            
+            //Coins
+            addObject(Coins[0], 50, 21);
+            addObject(Coins[1], 50, 33);
+            addObject(Coins[2], 50, 41);
+            addObject(Coins[3], 50, 53);
             
             //Finish
-            addObject(Ground[1], 10, 11);
+            addObject(Ground[7], 15, 6);
+            addObject(Ground[8], 11, 6);
+            addObject(Ground[9], 7, 6);
+            addObject(Ground[10], 3, 6);
+            addObject(Ground[11], 0, 6);
             
-            addObject(player = Player.createPlayer(playerType), 4, 65);
-            return 50;
+            addObject(player, 4, 65);
+            return 150;
+        }
+        
+        
+        if (lvl == 4) {
+            addScore = false;
+            Ground = new Ground[12];
+            MovingBricksUp = new MovingBrickUp[5];
+            Bricks = new Brick[4];
+            Coins = new Coin[4];
+
+            for (int i = 0; i < Ground.length; i++)
+            {
+                Ground[i] = new Ground ();
+            }   
+            
+            for (int i = 0; i < Coins.length; i++)
+            {
+                Coins[i] = new Coin();
+            }
+            
+            for (int i = 0; i < Bricks.length; i++)
+            {
+                Bricks[i] = new Brick();
+            }
+            
+            
+            //first floor
+            addObject(Ground[0], 0, 69);
+            addObject(Ground[1], 3, 69);
+            addObject(Ground[2], 7, 69);
+            addObject(Ground[3], 11, 69);
+            addObject(Ground[4], 15, 69);
+            addObject(Ground[5], 19, 69);
+            addObject(Ground[6], 23, 69);
+            
+            
+            addObject(Bricks[0], 11, 12);
+            addObject(Bricks[1], 15, 12);
+            addObject(Bricks[2], 19, 12);
+            addObject(Bricks[3], 23, 12);
+            
+            //MovingBricks distance's
+            MovingBricksUp[0] = new MovingBrickUp(12, 69);
+            MovingBricksUp[1] = new MovingBrickUp(1, 33);
+            MovingBricksUp[2] = new MovingBrickUp(1, 33);
+            MovingBricksUp[3] = new MovingBrickUp(1, 33);
+            MovingBricksUp[4] = new MovingBrickUp(1, 33);
+            
+            //MovingBricks locations
+            addObject(MovingBricksUp[0], 7, 65);
+            addObject(MovingBricksUp[1], 31, 2);
+            addObject(MovingBricksUp[2], 39, 12);
+            addObject(MovingBricksUp[3], 47, 22);
+            addObject(MovingBricksUp[4], 55, 32);
+            
+            //Coins
+            addObject(Coins[0], 11, 7);
+            addObject(Coins[1], 19, 7);
+            addObject(Coins[2], 70, 27);
+            addObject(Coins[3], 78, 27);
+            
+            
+            //Finish
+            addObject(Ground[7], 62, 32);
+            addObject(Ground[8], 66, 32);
+            addObject(Ground[9], 70, 32);
+            addObject(Ground[10], 74, 32);
+            addObject(Ground[11], 78, 32);
+            
+            addObject(player, 7, 65);
+            return 200;
+        }
+        
+        if (lvl == 5) {
+            addScore = false;
+            Ground = new Ground[13];
+            MovingBricksLeft = new MovingBrickLeft[4];
+            MovingBricksRight = new MovingBrickRight[3];
+            MovingBricksUp = new MovingBrickUp[5];
+            Bricks = new Brick[2];
+            Coins = new Coin[4];
+
+            for (int i = 0; i < Ground.length; i++)
+            {
+                Ground[i] = new Ground ();
+            }   
+            
+            for (int i = 0; i < Coins.length; i++)
+            {
+                Coins[i] = new Coin();
+            }
+            
+            for (int i = 0; i < Bricks.length; i++)
+            {
+                Bricks[i] = new Brick();
+            }
+            
+            
+            //first floor
+            addObject(Ground[0], 0, 69);
+            addObject(Ground[1], 3, 69);
+            addObject(Ground[2], 7, 69);
+            addObject(Ground[3], 11, 69);
+            addObject(Ground[4], 15, 69);
+            addObject(Ground[5], 19, 69);
+            addObject(Ground[6], 23, 69);
+            
+            
+            addObject(Bricks[0], 35, 9);
+            addObject(Bricks[1], 27, 9);
+
+            //MovingBricks distance's           
+            MovingBricksLeft[0] = new MovingBrickLeft(0, 78);
+            MovingBricksLeft[1] = new MovingBrickLeft(0, 78);
+            MovingBricksLeft[2] = new MovingBrickLeft(0, 78);
+            MovingBricksLeft[3] = new MovingBrickLeft(0, 78);
+            
+            MovingBricksRight[0] = new MovingBrickRight(0, 78);
+            MovingBricksRight[1] = new MovingBrickRight(0, 78);
+            MovingBricksRight[2] = new MovingBrickRight(0, 78);
+            
+            MovingBricksUp[0] = new MovingBrickUp(9, 37);
+            MovingBricksUp[1] = new MovingBrickUp(9, 37);
+            MovingBricksUp[2] = new MovingBrickUp(9, 37);
+            MovingBricksUp[3] = new MovingBrickUp(9, 37);
+            MovingBricksUp[4] = new MovingBrickUp(9, 37);
+            
+            //MovingBricks locations
+            addObject(MovingBricksLeft[0], 19, 61);
+            addObject(MovingBricksLeft[1], 35, 53);
+            addObject(MovingBricksLeft[2], 51, 45);
+            addObject(MovingBricksLeft[3], 67, 37);
+            
+            addObject(MovingBricksRight[0], 27, 57);
+            addObject(MovingBricksRight[1], 43, 49); 
+            addObject(MovingBricksRight[2], 59, 41);
+            
+            addObject(MovingBricksUp[0], 78, 31);
+            addObject(MovingBricksUp[1], 67, 25);
+            addObject(MovingBricksUp[2], 59, 21);
+            addObject(MovingBricksUp[3], 51, 17);
+            addObject(MovingBricksUp[4], 43, 13);
+
+            
+            //Coins
+            addObject(Coins[0], 19, 57);
+            addObject(Coins[1], 75, 27);
+            addObject(Coins[2], 15, 5);
+            addObject(Coins[3], 3, 5);
+            
+            
+            //Finish
+            addObject(Ground[7], 19, 9);
+            addObject(Ground[8], 15, 9);
+            addObject(Ground[9], 11, 9);
+            addObject(Ground[10], 7, 9);
+            addObject(Ground[11], 3, 9);
+            addObject(Ground[12], 0, 9);
+            
+            addObject(player, 4, 65);
+            return 250;
         }
         return 0;
     }

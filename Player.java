@@ -2,7 +2,7 @@ import greenfoot.*;
 import java.lang.Object;
 import java.util.List;
 
-public abstract class Player extends Actor {
+public class Player extends Actor {
     private int speed;
     private int initialSpeed;
     private int vSpeed = 0;
@@ -22,24 +22,21 @@ public abstract class Player extends Actor {
     protected GreenfootImage image7;
     protected GreenfootImage image8;
 
-    public enum PlayerType {
-        CITIZEN, POLICE, GENIUS
-    };
 
-    protected Player(int speed) {
+    public Player(int speed) {
         this.initialSpeed = speed;
         this.speed = speed;
-        //setBagType(Bag.BagType.SANDBAG);
-    }
-
-    static public Player createPlayer(PlayerType type) {
-        switch (type) {
-            case CITIZEN: return new Citizen();
-            case POLICE: return new Police();
-            case GENIUS: return new Genius();
-        }
-        assert false;
-        return null;
+        
+        //super(6);
+        getImage().scale(40, 40);
+        image1 = new GreenfootImage("POLITIElinks2.png");
+        image2 = new GreenfootImage("POLITIElinks1.png");
+        image3 = new GreenfootImage("POLITIErechts2.png");
+        image4 = new GreenfootImage("POLITIErechts1.png");
+        image5 = new GreenfootImage("POLITIEachter2.png");
+        image6 = new GreenfootImage("POLITIEachter1.png");
+        image7 = new GreenfootImage("POLITIEvoor2.png");
+        image8 = new GreenfootImage("POLITIEvoor1.png");
     }
 
     @Override
@@ -63,43 +60,6 @@ public abstract class Player extends Actor {
             jump();
         }
         
- 
-        /* if(Greenfoot.mouseClicked(null)) {
-            getX();
-            getY();
-            //die shit hieronder faalt en moet op een andere manier gemaakt worden -> niet in act!
-            /*if((getX() == 78) &&(getY() == 72)||(getX() == 77) &&(getY() == 72)){
-               Greenfoot.stop();
-            }
-            
-            else if(Greenfoot(getX() == 78) &&(getY() == 72)||(getX() == 77) &&(getY() == 72)){
-               Greenfoot.start();
-            }
-            */
-            /*
-            if(((FloodWorld)getWorld()).backgroundMusic.getVolume() == 100 &&(getX() == 78) &&(getY() == 75)||(getX() == 77) &&(getY() == 75)){
-               ((FloodWorld)getWorld()).backgroundMusic.setVolume(0);
-            }
-           
-            else if(((FloodWorld)getWorld()).backgroundMusic.getVolume() == 0 &&(getX() == 78) &&(getY() == 75)||(getX() == 77) &&(getY() == 75)){
-               ((FloodWorld)getWorld()).backgroundMusic.setVolume(100);
-            }
-            
-            else if((getX() == 78) &&(getY() == 78)||(getX() == 77) &&(getY() == 78)){
-               Greenfoot.stop();
-            }
-            
-            else{
-            Bag bag = Bag.createBag(bagType);
-            if(bag.getCost() <= ((FloodWorld)getWorld()).getCoinCounter().coinValue) {
-                  MouseInfo mouse = Greenfoot.getMouseInfo();
-                 ((FloodWorld)getWorld()).getCoinCounter().remove(bag.getCost());
-                 getWorld().addObject(bag, mouse.getX(), (mouse.getY()));
-                 Greenfoot.playSound("sandbag.wav");
-            }
-        }
-            
-        }*/
         int waterOffset = 70 - ((SkyscraperWorld)getWorld()).getWaterLevel() / 2 / 10;
         if (waterOffset <= getY()) {
              setRotation(90);
@@ -118,7 +78,7 @@ public abstract class Player extends Actor {
     }
 
     private void move(int dx, int dy) {
-        setLocation(getX() + dx, getY() + dy);
+     setLocation(getX() + dx, getY() + dy);
     }
     
     public void jump() {
@@ -170,30 +130,28 @@ public abstract class Player extends Actor {
     
     public void onTouchMovingBrick(){
         Actor actor = null;
-        boolean unused = (actor = getOneObjectAtOffset(-1, 4, MovingBrick.class)) != null
-        || (actor = getOneObjectAtOffset(0, 4, MovingBrick.class)) != null
-        || (actor = getOneObjectAtOffset(1, 4, MovingBrick.class)) != null;
+        boolean unused = (actor = getOneObjectAtOffset(-1, 4, MovingBrickLeft.class))!= null 
+        || (actor = getOneObjectAtOffset(0, 4, MovingBrickLeft.class))!= null
+        || (actor = getOneObjectAtOffset(1, 4, MovingBrickLeft.class))!= null;
         if(actor != null) {
-            setLocation(getX() + ((MovingBrick)actor).getMovingBrickSpeed(), getY());
+            setLocation(getX() + ((MovingBrickLeft)actor).getMovingBrickLeftSpeed(), getY()); 
         }
-    }
-    
-    public Enemy getEnemy()
-    {
-        // This loop avoids checking for close enemies on every act() to avoid performance issues
-        // Instead, it does it once every reduceCollisionDetection times (3 at time of writing)
-        if (currCollDetection == reduceCollisionDetection)
-        {
-            Actor temp = getOneIntersectingObject(Enemy.class);
-            Enemy enemy = (Enemy)temp;
-            currCollDetection = 0;
-            return enemy;
+        
+        Actor actor2 = null;
+        boolean unused2 = (actor2 = getOneObjectAtOffset(-1, 4, MovingBrickRight.class))!= null 
+        || (actor2 = getOneObjectAtOffset(0, 4, MovingBrickRight.class))!= null
+        || (actor2 = getOneObjectAtOffset(1, 4, MovingBrickRight.class))!= null;
+        if(actor2 != null) {
+            setLocation(getX() + ((MovingBrickRight)actor2).getMovingBrickRightSpeed(), getY()); 
         }
-        else
-        {
-            currCollDetection++;
+        
+        Actor actor3 = null;
+        boolean unused3 = (actor3 = getOneObjectAtOffset(-1, 4, MovingBrickUp.class))!= null 
+        || (actor3 = getOneObjectAtOffset(0, 4, MovingBrickUp.class))!= null
+        || (actor3 = getOneObjectAtOffset(1, 4, MovingBrickUp.class))!= null;
+        if(actor3 != null) {
+            setLocation(getX(), getY() + ((MovingBrickUp)actor3).getMovingBrickUpSpeed()); 
         }
-        return null;
     }
     
     protected void switchImageLeft()
