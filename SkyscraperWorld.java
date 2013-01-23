@@ -143,7 +143,8 @@ public class SkyscraperWorld extends World {
             }
         }
         removeObject(player);
-        removeObject(movingWater);
+        
+        movingWater.setLevel(20);
     }
 
     public int loadLevel (int lvl)
@@ -350,8 +351,8 @@ public class SkyscraperWorld extends World {
             MovingBricksUp[0] = new MovingBrickUp(9, 21);
             
             //MovingBricks locations
-            addObject(MovingBricks[1], 45, 21);
-            addObject(MovingBricksUp[1], 79, 15);
+            addObject(MovingBricks[0], 45, 21);
+            addObject(MovingBricksUp[0], 79, 15);
             
             //Finish
             addObject(Ground[7], 47, 9);

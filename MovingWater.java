@@ -21,15 +21,18 @@ public class MovingWater extends Actor
     public void act() {
         setLocation(40, 70);
         
-        ++acts;
-        if (acts == 1) {
-            getImage().scale(820, getImage().getHeight() + 2);
-            acts = 0;
-            level += 2;
+        if (++acts == 1) {
+            setLevel(level + 2);
         }
     }
     
     public int getLevel() {
         return level;
-    }    
+    }
+    
+    public void setLevel(int lvl) {
+        getImage().scale(820, lvl);
+        acts = 0;
+        level = lvl;
+    }
 }
