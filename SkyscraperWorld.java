@@ -97,21 +97,11 @@ public class SkyscraperWorld extends World {
     }
 
     public void gameOver() {
-        saveHighScore();
-        Greenfoot.setWorld(new GameOverWorld(Game.SKYSCRAPER_GAME));
+        Greenfoot.setWorld(new GameOverWorld(Game.SKYSCRAPER_GAME, scoreCounter.getValue()));
     }
     
     public void winGame() {
-        Greenfoot.setWorld(new HighScoreWorld(Game.SKYSCRAPER_GAME));
-    }
-    
-    private void saveHighScore() {
-        HighScore highScore = HighScore.askName(scoreCounter.getValue());
-        try {
-            highScore.save(HighScore.defaultFilenameForGame(Game.SKYSCRAPER_GAME));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }        
+        Greenfoot.setWorld(new GameOverWorld(Game.SKYSCRAPER_GAME, scoreCounter.getValue()));
     }
     
     public void purge()

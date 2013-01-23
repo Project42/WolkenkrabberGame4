@@ -1,8 +1,6 @@
 #BlueJ class context
-comment0.params=
-comment0.target=GameOverWorld()
-comment1.params=game
-comment1.target=GameOverWorld(Game)
-comment2.params=
-comment2.target=void\ act()
-numComments=3
+comment0.params=game\ score
+comment0.target=GameOverWorld(Game,\ int)
+comment1.params=
+comment1.target=void\ act()
+numComments=2
