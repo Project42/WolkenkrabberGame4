@@ -22,11 +22,13 @@ public class SkyscraperWorld extends World {
     public SkyscraperWorld()  {
         super(80, 80, 10);
         currentLevel = 1;
+        
+        player = new Player();
+        
         levelCompletePoints = loadLevel(currentLevel);
         //backgroundMusic.playLoop();
         
-                setPaintOrder(GameOverScreen.class, /*Overlay.class,*/ Counter.class, MenuBar.class, MovingWater.class, Player.class, Coin.class, Surface.class);
-        
+        setPaintOrder(GameOverScreen.class, /*Overlay.class,*/ Counter.class, MenuBar.class, MovingWater.class, Player.class, Coin.class, Surface.class);
         
         
         /**General stuff**/
@@ -34,8 +36,6 @@ public class SkyscraperWorld extends World {
         
         addObject(new MenuBar(), 39, 75);
 
-        player = new Player();
-        
         scoreCounter = new Counter("Score: ");
         addObject(scoreCounter, 6, 74);
     }

@@ -23,9 +23,9 @@ public class Player extends Actor {
     protected GreenfootImage image8;
 
 
-    public Player(int speed) {
+    public Player() {
         this.initialSpeed = speed;
-        this.speed = speed;
+        this.speed = 5;
         
         //super(6);
         getImage().scale(40, 40);
