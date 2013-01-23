@@ -46,6 +46,7 @@ public abstract class Player extends Actor {
     public void act() {
         getImage().scale(40, 40);
         checkFall();
+        onTouchMovingBrick();
         if (speed / 4 <= 0) speed = 4;
 
         if (Greenfoot.isKeyDown("a")) {
@@ -99,12 +100,14 @@ public abstract class Player extends Actor {
         }
             
         }*/
-        
         int waterOffset = 70 - ((SkyscraperWorld)getWorld()).getWaterLevel() / 2 / 10;
         if (waterOffset <= getY()) {
-            getWorld().removeObject(this);
+             setRotation(90);
+            ((SkyscraperWorld)getWorld()).endGame();
             return;
         }
+
+        
         
         Actor coin = getOneIntersectingObject(Coin.class);
         if (coin != null) {
@@ -115,11 +118,6 @@ public abstract class Player extends Actor {
     }
 
     private void move(int dx, int dy) {
-        if(getY() > 69) {
-            setLocation(getX() + dx, 69);
-            return;
-        }
-
         setLocation(getX() + dx, getY() + dy);
     }
     
@@ -150,10 +148,6 @@ public abstract class Player extends Actor {
         if (moveUp) {
             setLocation(getX(), obj.getY() - 4);
         }
-        
-        if (inWater()) {
-            ((SkyscraperWorld)getWorld()).endGame();
-        }
     }
 
     private void checkFall() {
@@ -173,7 +167,17 @@ public abstract class Player extends Actor {
              || getOneObjectAtOffset(0, 4, Surface.class) != null
              || getOneObjectAtOffset(1, 4, Surface.class) != null;
     }
-   
+    
+    public void onTouchMovingBrick(){
+        Actor actor = null;
+        boolean unused = (actor = getOneObjectAtOffset(-1, 4, MovingBrick.class)) != null
+        || (actor = getOneObjectAtOffset(0, 4, MovingBrick.class)) != null
+        || (actor = getOneObjectAtOffset(1, 4, MovingBrick.class)) != null;
+        if(actor != null) {
+            setLocation(getX() + ((MovingBrick)actor).getMovingBrickSpeed(), getY());
+        }
+    }
+    
     public Enemy getEnemy()
     {
         // This loop avoids checking for close enemies on every act() to avoid performance issues
@@ -190,12 +194,6 @@ public abstract class Player extends Actor {
             currCollDetection++;
         }
         return null;
-    }
-    
-    private boolean inWater()
-    {
-        Actor Water = getOneIntersectingObject(Water.class);
-        return Water != null;
     }
     
     protected void switchImageLeft()

@@ -6,18 +6,18 @@ import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
  * @author (your name) 
  * @version (a version number or a date)
  */
-public class MovingBrick extends Surface
+public class MovingBrickUp extends Surface
 {
     private int speed = 1;
-    private int leftTurn;
-    private int rightTurn;
+    private int topTurn;
+    private int bottomTurn;
 
     /**
      * Move in the direction we are currently moving in. Turn if we reach a turning point.
      */
-    public MovingBrick(int leftT, int rightT) {
-        leftTurn = leftT;
-        rightTurn = rightT;
+    public MovingBrickUp(int topT, int bottomT) {
+        topTurn = topT;
+        bottomTurn = bottomT;
     }
     
     public void act() 
@@ -34,7 +34,7 @@ public class MovingBrick extends Surface
      */
     public boolean atTurningPoint()
     {
-       return (getX() <= leftTurn || getX() >= rightTurn);
+       return (getY() <= topTurn || getY() >= bottomTurn);
     }
     
     public int getMovingBrickSpeed(){

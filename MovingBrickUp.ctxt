@@ -1,6 +1,6 @@
 #BlueJ class context
-comment0.params=leftT\ rightT
-comment0.target=MovingBrick(int,\ int)
+comment0.params=topT\ bottomT
+comment0.target=MovingBrickUp(int,\ int)
 comment0.text=\r\n\ Move\ in\ the\ direction\ we\ are\ currently\ moving\ in.\ Turn\ if\ we\ reach\ a\ turning\ point.\r\n
 comment1.params=
 comment1.target=void\ act()
