@@ -62,8 +62,7 @@ public class Player extends Actor {
         
         int waterOffset = 70 - ((SkyscraperWorld)getWorld()).getWaterLevel() / 2 / 10;
         if (waterOffset <= getY()) {
-             setRotation(90);
-            ((SkyscraperWorld)getWorld()).gameOver();
+             ((SkyscraperWorld)getWorld()).loseLife();
             return;
         }
 

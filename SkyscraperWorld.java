@@ -1,21 +1,29 @@
 import greenfoot.*;
 import java.io.IOException;
+import java.awt.Color;
 
 public class SkyscraperWorld extends World {
-    private final int WINNING_LEVEL = 7;
+    private final int WINNING_LEVEL = 6;
     private boolean addScore;
+    private boolean isLoaded = true;
+    private boolean lostLife = false;
+    private boolean doTime = false;
     public Counter scoreCounter;
+    public TimeCounter time;
     private Player player;
     private int levelCompletePoints;
-    private int timeCount = 0;
-    private int currentLevel;
+    private int currentLevel;   
+    private int timeActs = 0;
     private Ground[] Ground;
     private MovingBrickRight[] MovingBricksRight;
     private MovingBrickLeft[] MovingBricksLeft;
     private MovingBrickUp[] MovingBricksUp;
     private Brick[] Bricks;
     private Coin[] Coins;
+    private Life[] lifes;
     private MovingWater movingWater;
+    private int countLifes = 3;
+    public LifesText text;
 
     //GreenfootSound backgroundMusic = new GreenfootSound("zeerstoer.mp3");
 
@@ -28,7 +36,7 @@ public class SkyscraperWorld extends World {
         levelCompletePoints = loadLevel(currentLevel);
         //backgroundMusic.playLoop();
         
-        setPaintOrder(GameOverScreen.class, /*Overlay.class,*/ Counter.class, MenuBar.class, MovingWater.class, Player.class, Coin.class, Surface.class);
+        setPaintOrder(TimeCounter.class, Counter.class, Life.class, LifesText.class, MenuBar.class, MovingWater.class, Player.class, Coin.class, Surface.class);
         
         
         /**General stuff**/
@@ -38,13 +46,27 @@ public class SkyscraperWorld extends World {
 
         scoreCounter = new Counter("Score: ");
         addObject(scoreCounter, 6, 74);
+        
+        time = new TimeCounter("Time: ");
+        addObject(time, 6, 77);
+        
+        lifes = new Life[3];
+        for (int i = 0; i < lifes.length; i++)
+            {
+                lifes[i] = new Life();
+            }
+        addObject(lifes[0] = new Life(), 65, 74);
+        addObject(lifes[1], 69, 74);
+        addObject(lifes[2], 73, 74);
+        
+        text = new LifesText("Lifes: ");
+        addObject(text, 62, 75);
     }
     
     public void act(){
-
         
         // Check for death, level completion and game completion:
-        
+
         if((currentLevel == 1)&&(addScore == false)&&((player.getY() <= 11)&&(player.getX() >=62))){
                 scoreCounter.add(10);
                 addScore = true;
@@ -65,7 +87,7 @@ public class SkyscraperWorld extends World {
                 addScore = true;
         } 
         
-        if((currentLevel == 6)&&(addScore == false)&&((player.getY() <= 9)&&(player.getX() <=15))){
+        if((currentLevel == 5)&&(addScore == false)&&((player.getY() <= 9)&&(player.getX() <=15))){
                 scoreCounter.add(10);
                 addScore = true;
         } 
@@ -80,12 +102,18 @@ public class SkyscraperWorld extends World {
             levelCompletePoints = loadLevel(currentLevel);
         }
         // Crude way to "win" the game
-        else if (currentLevel == WINNING_LEVEL)
+        if (currentLevel == WINNING_LEVEL)
         {
-            winGame();
+         scoreCounter.add(time.getTimeScore());
+            doTime = true;
         }
-        // Increment counter
-        timeCount++;
+        
+        if(doTime == true){
+            timeActs++;
+            if(timeActs == 250){
+                winGame();
+            }
+        }
     }
 
     public boolean checkLevelComplete()
@@ -101,7 +129,7 @@ public class SkyscraperWorld extends World {
     }
     
     public void winGame() {
-        Greenfoot.setWorld(new GameOverWorld(Game.SKYSCRAPER_GAME, scoreCounter.getValue()));
+       Greenfoot.setWorld(new GameOverWorld(Game.SKYSCRAPER_GAME, scoreCounter.getValue()));
     }
     
     public void purge()
@@ -149,7 +177,6 @@ public class SkyscraperWorld extends World {
             }
         }
         removeObject(player);
-        
         movingWater.setLevel(20);
     }
 
@@ -252,7 +279,7 @@ public class SkyscraperWorld extends World {
             addObject(Ground[14], 78, 11);
             
             addObject(player, 4, 65);
-
+            
             return 50;
         }
         
@@ -348,7 +375,7 @@ public class SkyscraperWorld extends World {
             
             //MovingBricks locations
             addObject(MovingBricksRight[0], 49, 6);
-            addObject(MovingBricksLeft[0], 48, 6);
+            addObject(MovingBricksLeft[0], 48, 10);
             addObject(MovingBricksUp[0], 79, 15);
             
             //Coins
@@ -447,10 +474,10 @@ public class SkyscraperWorld extends World {
             addObject(MovingBricksLeft[6], 50, 17);
             
             //Coins
-            addObject(Coins[0], 50, 21);
-            addObject(Coins[1], 50, 33);
-            addObject(Coins[2], 50, 41);
-            addObject(Coins[3], 50, 53);
+            addObject(Coins[0], 15, 1);
+            addObject(Coins[1], 11, 1);
+            addObject(Coins[2], 7, 1);
+            addObject(Coins[3], 3, 1);
             
             //Finish
             addObject(Ground[7], 15, 6);
@@ -623,7 +650,52 @@ public class SkyscraperWorld extends World {
             addObject(player, 4, 65);
             return 250;
         }
+        if (lvl == 6) {
+        }
         return 0;
+    }
+    
+    /** Deletes a life object after a miss */
+    public void loseLife() {
+        if((lostLife == false)&&(isLoaded == true)){
+        countLifes--;
+        }
+        if ((countLifes == 2)&&(lostLife == false)) 
+        {
+           removeObject(lifes[0]);
+           lostLife = true;
+           purge();
+           loadLevel(currentLevel);
+           isLoaded = false;
+           
+           if((lostLife == true)&&(isLoaded == false)){
+            lostLife = false;
+            isLoaded = true;
+        }
+        }
+       
+        else if ((countLifes == 1)&&(lostLife == false)) 
+        {
+            removeObject(lifes[1]);
+            lostLife = true;
+            purge();
+            loadLevel(currentLevel);
+            isLoaded = false;
+            
+            if((lostLife == true)&&(isLoaded == false)){
+            lostLife = false;
+            isLoaded = true;
+        }
+        }
+        
+        else if ((countLifes == 0)&&(lostLife == false)) 
+        {
+            // Game Over
+            removeObject(lifes[2]);
+            lostLife = true;
+            purge();
+            gameOver();
+        }
     }
     
     public int getWaterLevel() {
