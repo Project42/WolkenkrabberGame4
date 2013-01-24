@@ -1,11 +1,5 @@
 import greenfoot.*;  // (World, Actor, GreenfootImage, Greenfoot and MouseInfo)
 
-/**
- * Write a description of class MovingWater here.
- * 
- * @author (your name) 
- * @version (a version number or a date)
- */
 public class MovingWater extends Actor
 {
     private int acts;

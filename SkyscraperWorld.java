@@ -94,14 +94,10 @@ public class SkyscraperWorld extends World {
         
         if (checkLevelComplete())
         {
-            // If level is complete, call purge() to remove all objects
-            purge();
-            // Increase level
+            destroyWorld();
             currentLevel++;
-            // Set level clear goal
             levelCompletePoints = loadLevel(currentLevel);
         }
-        // Crude way to "win" the game
         if (currentLevel == WINNING_LEVEL)
         {
          scoreCounter.add(time.getTimeScore());
@@ -132,7 +128,7 @@ public class SkyscraperWorld extends World {
        Greenfoot.setWorld(new GameOverWorld(Game.SKYSCRAPER_GAME, scoreCounter.getValue()));
     }
     
-    public void purge()
+    public void destroyWorld()
     {
         if (Ground != null)
         {
@@ -657,7 +653,6 @@ public class SkyscraperWorld extends World {
         return 0;
     }
     
-    /** Deletes a life object after a miss */
     public void loseLife() {
         if((lostLife == false)&&(isLoaded == true)){
         countLifes--;
@@ -666,7 +661,7 @@ public class SkyscraperWorld extends World {
         {
            removeObject(lifes[0]);
            lostLife = true;
-           purge();
+           destroyWorld();
            loadLevel(currentLevel);
            isLoaded = false;
            
@@ -680,7 +675,7 @@ public class SkyscraperWorld extends World {
         {
             removeObject(lifes[1]);
             lostLife = true;
-            purge();
+            destroyWorld();
             loadLevel(currentLevel);
             isLoaded = false;
             
@@ -695,7 +690,7 @@ public class SkyscraperWorld extends World {
             // Game Over
             removeObject(lifes[2]);
             lostLife = true;
-            purge();
+            destroyWorld();
             gameOver();
         }
     }
