@@ -25,7 +25,7 @@ public class SkyscraperWorld extends World {
     private int countLifes = 3;
     public LifesText text;
 
-    //GreenfootSound backgroundMusic = new GreenfootSound("zeerstoer.mp3");
+    GreenfootSound backgroundMusic = new GreenfootSound("Escape.mp3");
 
     public SkyscraperWorld()  {
         super(80, 80, 10);
@@ -34,7 +34,7 @@ public class SkyscraperWorld extends World {
         player = new Player();
         
         levelCompletePoints = loadLevel(currentLevel);
-        //backgroundMusic.playLoop();
+        backgroundMusic.playLoop();
         
         setPaintOrder(TimeCounter.class, Counter.class, Life.class, LifesText.class, MenuBar.class, MovingWater.class, Player.class, Coin.class, Surface.class);
         
@@ -651,6 +651,8 @@ public class SkyscraperWorld extends World {
             return 250;
         }
         if (lvl == 6) {
+            setBackground("gameOver_game4.png");
+            movingWater.setLevel(1);
         }
         return 0;
     }

@@ -70,7 +70,9 @@ public class Player extends Actor {
         
         Actor coin = getOneIntersectingObject(Coin.class);
         if (coin != null) {
-            Greenfoot.playSound("Coin.wav");
+            GreenfootSound coinSound = new GreenfootSound("Coin.wav");
+            coinSound.setVolume(75); 
+            coinSound.play();
             getWorld().removeObject(coin);
             ((SkyscraperWorld)getWorld()).getScoreCounter().add(10);
         } 
