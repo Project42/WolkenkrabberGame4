@@ -1,0 +1,16 @@
+#BlueJ class context
+comment0.params=
+comment0.target=SkyscraperTimeCounter()
+comment1.params=prefix
+comment1.target=SkyscraperTimeCounter(java.lang.String)
+comment2.params=
+comment2.target=void\ act()
+comment3.params=
+comment3.target=int\ getTime()
+comment4.params=
+comment4.target=void\ updateScore()
+comment5.params=
+comment5.target=int\ getTimeScore()
+comment6.params=
+comment6.target=void\ updateImage()
+numComments=7
